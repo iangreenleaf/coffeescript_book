@@ -49,15 +49,20 @@ body > p {
   background: #FFF5CC;
 }
 
-#available_pets li a .sound {
+#available_pets li a .sound,
+#available_pets li a .action {
   margin-left: 0.4em;
   font-weight: normal;
   font-style: italic;
   color: gray;
 }
 
-#available_pets li a .sound:before, #available_pets li a .sound:after {
+#available_pets li a .action:before, #available_pets li a .action:after {
   content: "*";
+}
+
+#available_pets li a .sound:before, #available_pets li a .sound:after {
+  content: '"';
 }
 
 #pet_information {

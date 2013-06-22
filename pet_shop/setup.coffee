@@ -79,16 +79,24 @@ window.selectPet = (petIndex, element) ->
     link.className = ""
   element.className = "selected"
 
-animalSound = (animal) ->
+animalBehaviors = (animal) ->
   switch animal.type
-    when "cat" then "meow"
-    when "dog" then "bark"
+    when "cat" then ["meow", null]
+    when "dog" then ["bark", "wag"]
+    when "rabbit" then [null, "hop hop"]
     when "horse", "donkey"
-      "neigh"
-    else "sniff sniff"
+      ["neigh", null]
+    else
+      [null, null]
 
 formatPetName = (pet) ->
-  "#{pet.name} <span class='sound'>#{animalSound pet}!</span>"
+  [sound, action] = animalBehaviors pet
+  [behavior, cssClass] = if sound?
+    ["#{sound}!", "sound"]
+  else
+    [action, "action"]
+
+  "#{pet.name} <span class='#{cssClass}'>#{behavior.toLowerCase()}</span>"
 
 petOutput = for pet, i in shop.animals
   "<li><a href='#' onclick='selectPet(#{i}, this)'>#{formatPetName pet}</a></li>"
