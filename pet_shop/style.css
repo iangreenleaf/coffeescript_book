@@ -79,3 +79,25 @@ body > p {
   color: gray;
   font-style: italic;
 }
+
+#filtering {
+  margin: 1em;
+  background: #F2EDDE;
+  padding: 0.5em;
+  border-radius: 0.5em;
+  overflow: auto;
+}
+#filtering ul, #filtering li, #filtering .instructions {
+  float: left;
+}
+#filtering ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+#filtering li {
+  margin: 0 0.5em;
+}
+#filtering a {
+  color: #333;
+}

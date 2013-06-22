@@ -98,8 +98,17 @@ formatPetName = (pet) ->
 
   "#{pet.name} <span class='#{cssClass}'>#{behavior.toLowerCase()}</span>"
 
-petOutput = for pet, i in shop.animals
-  "<li><a href='#' onclick='selectPet(#{i}, this)'>#{formatPetName pet}</a></li>"
+window.displayPetList = (filter="All") ->
+  petOutput = for pet, i in shop.animals when filter is "All" or filter.toLowerCase() is pet.type
+    "<li><a href='#' onclick='selectPet(#{i}, this)'>#{formatPetName pet}</a></li>"
 
-availablePets = document.getElementById("available_pets")
-availablePets.innerHTML = petOutput.join ""
+  availablePets = document.getElementById("available_pets")
+  availablePets.innerHTML = petOutput.join ""
+
+window.displayPetList()
+
+filteringOutput = for type in ["All", "Dog", "Cat", "Rabbit", "Horse"]
+  "<li><a href='#' onclick='displayPetList(\"#{type}\")'>#{type}</a></li>"
+
+filteringOpts = document.getElementById("filtering_opts")
+filteringOpts.innerHTML = filteringOutput.join ""
