@@ -3,6 +3,7 @@ shop = {
   animals: [
     name: "Kelsey"
     type: "dog"
+    age: 2
     breed: "Labrador"
     description: "A sweet and loyal dog. Loves to play fetch. Sometimes drinks out of the toilet."
   ,
@@ -18,7 +19,9 @@ shop = {
   ,
     name: "Flops"
     type: "rabbit"
+    age: 4
     breed: "French Lop"
+    image: "flops.jpg"
     description: "Enjoys nothing more than a good roll in the grass and a nap in the sun."
   ,
     name: "Bopper"
@@ -33,12 +36,15 @@ shop = {
   ,
     name: "Jacques"
     type: "cat"
+    age: 11
     breed: "Manx"
     description: "A happy-go-lucky cat who occasionally finds himself at odds with Chairman Meow over who gets to sit at the top of the cat tree."
   ,
     name: "Chupa"
     type: "cat"
+    age: 3
     breed: "Scottish Fold"
+    image: "chupa.jpg"
     description: "Chupa always appears perplexed with the world, but don't be fooled. That's just the way his face is shaped."
   ,
     name: "Alfred"
@@ -54,8 +60,16 @@ document.title = "#{shop.owner.name}'s Pet Shop"
 
 formatPetDescription = (pet) ->
   "<h2>#{pet.name}</h2>" +
-    "<h3 class='breed'>#{pet.breed}</h3>" +
+    "<h3 class='breed'>#{pet.breed} " +
+    "(#{pet.age ? "??"} years old)</h3>" +
+    imageTag(pet.image) +
     "<p class='description'>#{pet.description}</p>"
+
+imageTag = (filename) ->
+  if filename?
+    "<img src='images/#{filename}' />"
+  else
+    ""
 
 window.selectPet = (petIndex, element) ->
   pet = shop.animals[petIndex]
