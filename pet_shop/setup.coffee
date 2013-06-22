@@ -89,18 +89,25 @@ animalBehaviors = (animal) ->
     else
       [null, null]
 
-formatPetName = (pet) ->
-  [sound, action] = animalBehaviors pet
-  [behavior, cssClass] = if sound?
-    ["#{sound}!", "sound"]
-  else
-    [action, "action"]
+formatPetName = (pet, showBehavior) ->
+  result = pet.name
+  if showBehavior
+    [sound, action] = animalBehaviors pet
+    [behavior, cssClass] = if sound?
+      ["#{sound}!", "sound"]
+    else
+      [action, "action"]
 
-  "#{pet.name} <span class='#{cssClass}'>#{behavior.toLowerCase()}</span>"
+    result += " <span class='#{cssClass}'>#{behavior.toLowerCase()}</span>"
+  result
+
+formatPetLink = (pet, i, showBehavior=true) ->
+  "<a href='#' onclick='selectPet(#{i}, this)'>" +
+    "#{formatPetName pet, showBehavior}</a>"
 
 window.displayPetList = (filter="All") ->
   petOutput = for pet, i in shop.animals when filter is "All" or filter.toLowerCase() is pet.type
-    "<li><a href='#' onclick='selectPet(#{i}, this)'>#{formatPetName pet}</a></li>"
+    "<li>#{formatPetLink pet, i}</li>"
 
   availablePets = document.getElementById("available_pets")
   availablePets.innerHTML = petOutput.join ""
@@ -112,3 +119,14 @@ filteringOutput = for type in ["All", "Dog", "Cat", "Rabbit", "Horse"]
 
 filteringOpts = document.getElementById("filtering_opts")
 filteringOpts.innerHTML = filteringOutput.join ""
+
+displayFeatured = (featuredPets...) ->
+  chosenPetIndex = Math.floor Math.random() * featuredPets.length
+  chosenPetName = featuredPets[chosenPetIndex]
+  for pet, i in shop.animals when pet.name is chosenPetName
+    [chosenPet, fullListIndex] = [pet, i]
+  featured = document.getElementById("featured")
+  featured.innerHTML = "<span class='title'>Featured Pet</span>" +
+    formatPetLink chosenPet, fullListIndex, false
+
+displayFeatured "Chupa", "Kelsey", "Flops"
