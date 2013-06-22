@@ -11,150 +11,136 @@
 # It is probably easiest to run them in a CoffeeScript console, though you
 # can compile and run them in a browser if your prefer.
 
-############################
-# Dealing with null values #
-############################
+###############################################
+# Defining a class, functions, and properties #
+###############################################
 
-if yeti?
-  "I want to believe"
+class Airplane
+  takeOff: (eta) ->
+    @taxi()
+    console.log "#{s}..." for s in [eta..0]
+    console.log "Vrrrroooom!"
+  taxi: ->
+    if Math.random() > 0.5
+      console.log "Taxiing..."
+  describe: ->
+    "A #{@color} plane"
+  parkAt: (airport) ->
+    airport.store @
 
-animalStatus = (animal) ->
-  creatures = { ocelot: true, dodo: false }
-  if creatures[animal]?
-    if creatures[animal]
-      "The #{animal} is alive and well."
-    else
-      "Oh no! The #{animal} is extinct!"
-  else
-    "The #{animal} isn't real."
+plane = new Airplane()
+plane.color = "white"
 
-console.log animalStatus("ocelot")
-console.log animalStatus("dodo")
-console.log animalStatus("unicorn")
+plane.takeOff()
+plane.takeOff(7)
 
-trees =
-  pine:
-    type: "evergreen"
-  crabapple:
-    type: "deciduous"
-    fruit:
-      edible: false
+console.log plane.describe()
 
-if trees.pine.fruit?.edible
-  console.log "Mmmm... pine fruit."
+plane2 = new Airplane()
+plane2.color = "blue"
+console.log plane2.describe()
 
-if trees.truffula?.fruit?.edible
-  console.log "Mmmm... truffula fruit."
+class Airport
+  store: (plane) ->
+    @hangar ?= []
+    @hangar.push plane
 
-alpha =
-  lowercase: ["a", "b", "c", "d"]
-console.log alpha.lowercase?[2].toUpperCase()
-console.log alpha.uppercase?[2].toLowerCase()
+chicago_ohare = new Airport()
+plane.parkAt chicago_ohare
 
-extractBugNumber = (line) ->
-  line.match(/(issue|bug) #(\d+)/)?[2]
+##########################################
+# Functions outside the class definition #
+##########################################
 
-console.log extractBugNumber "This fixes bug #345."
-console.log extractBugNumber "No bug number mentioned."
+Date::getYearAE = ->
+  monthOffset = if @getMonth() < 11 then 1 else 0
+  @getFullYear() - 1944 - monthOffset
 
-oppositeMath =
-  min: Math.max
-console.log oppositeMath.min?(3, 2, 5)
-console.log oppositeMath.max?(3, 2, 5)
+today = new Date()
+console.log "It is the year #{today.getYearAE()} AE"
 
-briefcase =
-  color: "silver"
-briefcase.combination ?= "1234"
-briefcase.color ?= "black"
-console.log briefcase
+################
+# Constructors #
+################
 
-sighting = mothMan ? "sandhill crane"
-console.log sighting
+class Train
+  constructor: (@numCars, @type="diesel") ->
+    @load = 0
+    @capacity = @numCars * 100
+  describe: ->
+    "A #{@type} train with #{@numCars} cars." +
+      " Current filled: #{@load}/#{@capacity} tons."
 
-#############################
-# Assigning multiple values #
-#############################
+train = new Train(35)
+console.log train.describe()
+train2 = new Train 20, "steam"
+console.log train2.describe()
 
-[first, second] = ["horse", "cart"]
-console.log "Don't put the #{second} before the #{first}."
+###################################
+# Static functions and properties #
+###################################
 
-[x, y] = [22, 15]
-hypotenuse = Math.sqrt x*x + y*y
+class Bicycle
+  @WHEELS = 2
 
-[languageName, prefix] = "CoffeeScript".match /(.*)Script/
-console.log "I love the smell of #{prefix} in the morning."
+  constructor: (@color, @size, @frameType, @tireWidth, @handlebarType) ->
 
-[first, second] = ["cow", "milk"]
-# Wait, or is it the other way around?
-[first, second] = [second, first]
-console.log "Don't put the #{second} before the #{first}."
+  @frameSizeByHeight = (riderHeight) ->
+    Math.floor riderHeight * 0.82
 
-[drink, [alcohol, mixer]] = ["Screwdriver", ["vodka", "orange juice"]]
-console.log "A #{drink} consists of #{alcohol} and #{mixer}."
+  @buildPackageDeal = (color, type, riderHeight) ->
+    basics = [color, @frameSizeByHeight(riderHeight)]
+    details = switch type
+      when "road"
+        ["road", "23c", "drop bars"]
+      when "commuter"
+        ["road", "30c", "flat bars"]
+      when "mountain"
+        ["mountain", "2in", "flat bars"]
+    args = basics.concat details
+    new Bicycle(args...)
 
-blackbird = verb: "singing", time: "midnight"
-{time} = blackbird
-console.log "At #{time}"
-{verb: birdBehavior} = blackbird
-console.log "It was #{birdBehavior}."
+for h in [60, 68, 72]
+  console.log "A #{h}\" rider needs a size " +
+    "#{Bicycle.frameSizeByHeight h} bike."
 
-retroGames =
-  pacman:
-    villains: "ghosts"
-    objective: "eat dots"
-  spaceInvaders:
-    villains: "aliens"
-    objective: "shoot aliens"
+Bicycle.buildPackageDeal "blue", "commuter", 66
 
-{pacman: {villains, objective}, spaceInvaders: { villains: otherBadGuys}} = retroGames
-console.log "In Pacman the goal was to #{objective}."
-console.log "The enemies were #{villains}. At least they weren't #{otherBadGuys}."
+console.log "Bikes have #{Bicycle.WHEELS} wheels."
 
-boat = { directions: ["port", "starboard"] }
-{directions: [left, right]} = boat
-console.log "Turn to #{right}!"
+###############
+# Inheritance #
+###############
 
-directionCommands = [
-  {type: "boat", directions: ["port", "starboard"]},
-  {type: "dogsled", directions: ["haw", "gee"]}
-]
-[boatInfo, {directions: [left, right]}] = directionCommands
-console.log "#{left}! Mush!"
+class Automobile
+  honk: ->
+    console.log "Beep!"
+  radio: (volume=0) ->
+    console.log "Radio at #{volume}."
 
+class Hatchback extends Automobile
+  carAlarm: ->
+    @honk()
+    @honk()
+    @honk()
 
-###############################
-# Advanced function arguments #
-###############################
+myCar = new Hatchback()
+myCar.honk()
+myCar.carAlarm()
 
-formatTemperature = (degrees, scale='K', decimalPlaces=1) ->
-  formatted = degrees.toFixed decimalPlaces
-  formatted += if scale.toUpperCase() is 'K' then " " else "°"
-  formatted + scale.toUpperCase()
+class Truck extends Automobile
+  honk: ->
+    console.log "BRAAAAAP"
+  radio: (volume) ->
+    super volume + 2
 
-console.log formatTemperature(42)
-console.log formatTemperature(22.35, "C")
-console.log formatTemperature(12.34, "F", 2)
-console.log formatTemperature(88.11265, null, 4)
+truck = new Truck
+truck.radio 9
 
-formattedAverageTemperature = (scale, temperatures...) ->
-  sum = 0
-  sum += t for t in temperatures
-  formatTemperature(sum / (temperatures.length), scale)
+class PoliceCar extends Automobile
+  honk: ->
+    super
+    console.log "Wee-oo wee-oo wee-oo!"
 
-console.log formattedAverageTemperature("F", 98, 10, 32)
-
-temps = [-10, 44, 80]
-console.log formattedAverageTemperature("F", temps...)
-
-fetchSearchResults = (url, searchTerms..., callback) ->
-  console.log "Searching #{url} for #{searchTerms.join " "} now."
-  asyncRequest url, buildQuery(searchTerms), callback
-
-[race, [splits..., time]] = ["10k", ["13:08", "13:09", "26:17"]]
-console.log "The world record for #{race} is #{time}."
-console.log "The splits were #{splits.join " and "}."
-
-formattedColdestTemperature = (scale, temperatures...) ->
-  minTemp = Math.min temperatures...
-  formatTemperature(minTemp, scale)
-console.log formattedColdestTemperature "C", 20, -5, 33
+police = new PoliceCar()
+police.honk()
