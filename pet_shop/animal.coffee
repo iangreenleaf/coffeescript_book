@@ -26,6 +26,23 @@ class window.Animal
             source: response.AbstractSource
             url: response.AbstractURL
         callback()
+        topics = (topic.FirstURL for topic in response.RelatedTopics when topic.FirstURL?)
+        @fetchExtraLinks topics, callback
+
+  fetchExtraLinks: (topics, callback) ->
+    @extraLinks = {}
+    expected = topics.length
+    for topic in topics
+      do (topic) =>
+        reqwest
+          url: topic
+          data: { format: "json" }
+          type: "jsonp"
+          success: (response) =>
+            if response.Heading
+              @extraLinks[response.Heading] = topic
+              expected -= 1
+              callback() if expected is 0
 
   @fromHash: (data) ->
     animal = new @

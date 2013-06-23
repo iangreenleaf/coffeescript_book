@@ -7,7 +7,8 @@ class window.PetView extends View
       "(#{@pet.age ? "??"} years old)</h3>" +
       @imageTag(@pet.image) +
       "<p class='description'>#{@pet.description}</p>" +
-      "<div id='additional_info' class='more'></div>"
+      "<div id='additional_info' class='more'></div>" +
+      "<div id='extra_links' class='more'></div>"
 
   formattedName: (options={}) ->
     result = @pet.name
@@ -37,3 +38,9 @@ class window.PetView extends View
           "<a href='#{@pet.breedInfo.url}'>#{@pet.breedInfo.source}</a>" +
           ", powered by <a href='https://duckduckgo.com'>DuckDuckGo</a>" +
           ")</p>"
+      if @pet.extraLinks?
+        output = "Learn more: <ul>"
+        for topic, url of @pet.extraLinks
+          output += "<li><a href='#{url}'>#{topic}</a></li>"
+        output += "</ul>"
+        @renderToElement "extra_links", output
