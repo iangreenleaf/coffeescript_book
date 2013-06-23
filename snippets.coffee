@@ -1,13 +1,21 @@
-class Boat
-  liftAnchor: (doneCallback) ->
-    console.log "Lifting anchor."
-    if doneCallback?
-      setTimeout doneCallback, 1000
-  setSpeed: (speed) ->
-    console.log "Adjusting speed to #{speed} knots."
-  depart: ->
-    @liftAnchor =>
-      @setSpeed 10
+# This snippet does not work as expected!
+buggySleepSort = (numbers) ->
+  for n in numbers
+    setTimeout(
+      -> console.log n
+      n
+    )
+# sleepSort [4, 2, 6, 9, 3]
+# Expected output: 2 3 4 6 9
+# Actual output: 3 3 3 3 3
 
-caravel = new Boat
-caravel.depart()
+# A working version of SleepSort.
+sleepSort = (numbers) ->
+  for n in numbers
+    do (n) ->
+      setTimeout(
+        -> console.log n
+        n
+      )
+
+sleepSort [4, 2, 6, 9, 3]
