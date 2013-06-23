@@ -1,8 +1,7 @@
-class window.ShopView
+class window.ShopView extends View
   constructor: (@owner, @mainContent) ->
 
   render: ->
-    nameElement = document.getElementById("owner_name")
-    nameElement.innerHTML = @owner.possessiveName()
+    @renderToElement "owner_name", @owner.possessiveName()
     document.title = "#{@owner.possessiveName()} Pet Shop"
     @mainContent.render()

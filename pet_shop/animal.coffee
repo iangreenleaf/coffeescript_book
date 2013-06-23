@@ -1,4 +1,6 @@
 class window.Animal
+  @CATEGORIES = ["All", "Dog", "Cat", "Rabbit", "Horse"]
+
   behaviors: ->
     switch @type
       when "cat" then ["meow", null]
@@ -8,6 +10,9 @@ class window.Animal
         ["neigh", null]
       else
         [null, null]
+
+  matchesFilter: (criteria='All') ->
+    criteria is "All" or criteria.toLowerCase() is @type
 
   @fromHash: (data) ->
     animal = new @
