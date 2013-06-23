@@ -3,8 +3,10 @@ class window.View
     el = document.getElementById(id)
     el.innerHTML = output
 
-  imageTag: (filename) ->
+  imageTag: (filename, options={}) ->
+    options.size ?= "original"
     if filename?
-      "<img src='images/#{filename}' />"
+      sizedFilename = filename.replace /\.(jpg|png)$/, "-#{options.size}.$1"
+      "<img src='images/#{sizedFilename}' />"
     else
       ""

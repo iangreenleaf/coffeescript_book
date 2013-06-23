@@ -128,3 +128,7 @@ body > p {
   display: block;
   color: #890900;
 }
+
+#featured img {
+  margin-right: 0.5em;
+}

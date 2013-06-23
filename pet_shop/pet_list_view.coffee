@@ -6,15 +6,14 @@ class window.PetListView extends View
     @renderList()
     @renderFilteringBar()
     @renderFeatured()
-    window.listView = @
-    window.displayPetList = (filterType) ->
-      window.listView.renderList(filterType)
-    window.selectPet = (index, element) ->
-      window.listView.selectPet(index, element)
+    window.displayPetList = (filterType) =>
+      @renderList(filterType)
+    window.selectPet = (index, element) =>
+      @selectPet(index, element)
 
   renderList: (filter) ->
     petOutput = for view, i in @views when view.pet.matchesFilter filter
-      "<li>#{view.formattedLink i}</li>"
+      "<li>#{view.formattedLink i, showBehavior: true, showThumbnail: true}</li>"
     @renderToElement "available_pets", petOutput.join ""
 
   selectPet: (petIndex, element) ->
@@ -26,13 +25,15 @@ class window.PetListView extends View
 
   renderFeatured: ->
     return unless @featured?
-    chosenPetIndex = Math.floor Math.random() * @featured.length
-    chosenPetName = @featured[chosenPetIndex]
-    for view, i in @views when view.pet.name is chosenPetName
-      [chosenPetView, fullListIndex] = [view, i]
+    @chosenFeatured ?= do =>
+      chosenPetIndex = Math.floor Math.random() * @featured.length
+      chosenPetName = @featured[chosenPetIndex]
+      for view, i in @views when view.pet.name is chosenPetName
+        return [view, i]
+    [chosenPetView, fullListIndex] = @chosenFeatured
     @renderToElement "featured",
       "<span class='title'>Featured Pet</span>" +
-      chosenPetView.formattedLink fullListIndex, false
+      chosenPetView.formattedLink fullListIndex, showThumbnail: true
 
   renderFilteringBar: ->
     filteringOutput = for type in Animal.CATEGORIES

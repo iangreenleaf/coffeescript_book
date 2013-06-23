@@ -8,9 +8,13 @@ class window.PetView extends View
       @imageTag(@pet.image) +
       "<p class='description'>#{@pet.description}</p>"
 
-  formattedName: (showBehavior) ->
+  formattedName: (options={}) ->
     result = @pet.name
-    if showBehavior
+
+    if options.showThumbnail
+      result = @imageTag(@pet.image, size: "thumb") + result
+
+    if options.showBehavior
       [sound, action] = @pet.behaviors()
       [behavior, cssClass] = if sound?
         ["#{sound}!", "sound"]
@@ -20,7 +24,7 @@ class window.PetView extends View
       result += " <span class='#{cssClass}'>#{behavior.toLowerCase()}</span>"
     result
 
-  formattedLink: (i, showBehavior=true) ->
+  formattedLink: (i, options={}) ->
     "<a href='#' onclick='selectPet(#{i}, this)'>" +
-      "#{@formattedName showBehavior}</a>"
+      "#{@formattedName options}</a>"
 
