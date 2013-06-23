@@ -30,15 +30,10 @@ class window.PetView extends View
       "#{@formattedName options}</a>"
 
   renderExtraContent: ->
-    window.renderExtraContentCallback = (response) =>
-      if response.Abstract
+    @pet.fetchBreedInfo =>
+      if @pet.breedInfo?
         @renderToElement "additional_info",
-          "<p>#{response.Abstract} (" +
-          "<a href='#{response.AbstractURL}'>#{response.AbstractSource}</a>" +
+          "<p>#{@pet.breedInfo.description} (" +
+          "<a href='#{@pet.breedInfo.url}'>#{@pet.breedInfo.source}</a>" +
           ", powered by <a href='https://duckduckgo.com'>DuckDuckGo</a>" +
           ")</p>"
-    query = @pet.breed.replace " ", "+"
-    url = "https://api.duckduckgo.com/?q=#{query}&format=json&t=CoffeeScriptBook"
-    s = document.createElement "script"
-    s.src = "#{url}&callback=renderExtraContentCallback"
-    document.body.appendChild s

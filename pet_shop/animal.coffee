@@ -14,6 +14,19 @@ class window.Animal
   matchesFilter: (criteria='All') ->
     criteria is "All" or criteria.toLowerCase() is @type
 
+  fetchBreedInfo: (callback) ->
+    reqwest
+      url: "https://api.duckduckgo.com/"
+      data: { q: @breed, format: "json", t: "CoffeeScriptBook" }
+      type: "jsonp"
+      success: (response) =>
+        if response.Abstract
+          @breedInfo =
+            description: response.Abstract
+            source: response.AbstractSource
+            url: response.AbstractURL
+        callback()
+
   @fromHash: (data) ->
     animal = new @
     animal[key] = val for key, val of data
