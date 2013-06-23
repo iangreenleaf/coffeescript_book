@@ -132,3 +132,19 @@ body > p {
 #featured img {
   margin-right: 0.5em;
 }
+
+#pet_information .more {
+  color: gray;
+}
+
+#pet_information .more p {
+  border: 1px solid #CCC;
+  border-left: none;
+  border-right: none;
+  padding: 1em 0;
+  margin-top: 2em;
+}
+
+#pet_information .more a {
+  color: #194900;
+}

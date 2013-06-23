@@ -13,12 +13,13 @@ class window.PetListView extends View
 
   renderList: (filter) ->
     petOutput = for view, i in @views when view.pet.matchesFilter filter
-      "<li>#{view.formattedLink i, showBehavior: true, showThumbnail: true}</li>"
+      "<li>#{view.formattedLink i, showBehavior: true}</li>"
     @renderToElement "available_pets", petOutput.join ""
 
   selectPet: (petIndex, element) ->
     petView = @views[petIndex]
     @renderToElement "pet_information", petView.formattedDescription()
+    petView.renderExtraContent()
     for link in document.querySelectorAll("#available_pets a")
       link.className = ""
     element.className = "selected"
