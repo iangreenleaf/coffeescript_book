@@ -101,6 +101,12 @@ class window.Animal
       type: "horse"
       breed: "Breton"
       description: "The resident shop patriarch. Very calm and tolerates the antics of the other animals when they sneak into his pen."
+    ,
+      name: "Captain Chirp"
+      type: "bird"
+      age: 2
+      breed: "Parakeet"
+      description: "Nice enough, though he strikes people as a bit... flighty."
     ]
     for animal in animalData
       @fromHash animal
