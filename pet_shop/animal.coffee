@@ -19,30 +19,31 @@ class window.Animal
       url: "https://api.duckduckgo.com/"
       data: { q: @breed, format: "json", t: "CoffeeScriptBook" }
       type: "jsonp"
-      success: (response) =>
-        if response.Abstract
-          @breedInfo =
-            description: response.Abstract
-            source: response.AbstractSource
-            url: response.AbstractURL
-        callback()
-        topics = (topic.FirstURL for topic in response.RelatedTopics when topic.FirstURL?)
-        @fetchExtraLinks topics, callback
+    .then (response) =>
+      if response.Abstract
+        @breedInfo =
+          description: response.Abstract
+          source: response.AbstractSource
+          url: response.AbstractURL
+      callback()
+      topics = (topic.FirstURL for topic in response.RelatedTopics when topic.FirstURL?)
+      @fetchExtraLinks topics, callback
 
   fetchExtraLinks: (topics, callback) ->
     @extraLinks = {}
-    expected = topics.length
-    for topic in topics
+    queries = for topic in topics
       do (topic) =>
         reqwest
           url: topic
           data: { format: "json" }
           type: "jsonp"
-          success: (response) =>
-            if response.Heading
-              @extraLinks[response.Heading] = topic
-              expected -= 1
-              callback() if expected is 0
+        .then (response) ->
+          [response.Heading, topic]
+    RSVP.all(queries).then (links) =>
+      for [heading, url] in links
+        if heading
+          @extraLinks[heading] = url
+      callback()
 
   @fromHash: (data) ->
     animal = new @
