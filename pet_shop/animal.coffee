@@ -31,18 +31,16 @@ class window.Animal
 
   fetchExtraLinks: (topics, callback) ->
     @extraLinks = {}
-    expected = topics.length
-    for topic in topics
-      do (topic) =>
-        reqwest
-          url: topic
-          data: { format: "json" }
-          type: "jsonp"
-          success: (response) =>
-            if response.Heading
-              @extraLinks[response.Heading] = topic
-              expected -= 1
-              callback() if expected is 0
+    getExtraLink = (topic, done) =>
+      reqwest
+        url: topic
+        data: { format: "json" }
+        type: "jsonp"
+        success: (response) =>
+          if response.Heading
+            @extraLinks[response.Heading] = topic
+          done()
+    async.each topics, getExtraLink, callback
 
   @fromHash: (data) ->
     animal = new @
