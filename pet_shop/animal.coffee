@@ -15,34 +15,36 @@ class window.Animal
     criteria is "All" or criteria.toLowerCase() is @type
 
   fetchBreedInfo: (callback) ->
-    reqwest
+    await reqwest
       url: "https://api.duckduckgo.com/"
       data: { q: @breed, format: "json", t: "CoffeeScriptBook" }
       type: "jsonp"
-      success: (response) =>
-        if response.Abstract
-          @breedInfo =
-            description: response.Abstract
-            source: response.AbstractSource
-            url: response.AbstractURL
-        callback()
-        topics = (topic.FirstURL for topic in response.RelatedTopics when topic.FirstURL?)
-        @fetchExtraLinks topics, callback
+      success: defer response
+    if response.Abstract
+      @breedInfo =
+        description: response.Abstract
+        source: response.AbstractSource
+        url: response.AbstractURL
+    callback()
+    topics = (topic.FirstURL for topic in response.RelatedTopics when topic.FirstURL?)
+    @fetchExtraLinks topics, callback
 
   fetchExtraLinks: (topics, callback) ->
     @extraLinks = {}
-    expected = topics.length
-    for topic in topics
-      do (topic) =>
-        reqwest
-          url: topic
-          data: { format: "json" }
-          type: "jsonp"
-          success: (response) =>
-            if response.Heading
-              @extraLinks[response.Heading] = topic
-              expected -= 1
-              callback() if expected is 0
+    responses = []
+    await
+      for topic, i in topics
+        responses[i] = [null, topic]
+        do (topic) =>
+          reqwest
+            url: topic
+            data: { format: "json" }
+            type: "jsonp"
+            success: defer responses[i][0]
+    for [response, topic] in responses
+      if response.Heading
+        @extraLinks[response.Heading] = topic
+    callback()
 
   @fromHash: (data) ->
     animal = new @
