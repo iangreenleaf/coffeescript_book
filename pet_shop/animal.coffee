@@ -6,6 +6,7 @@ class window.Animal
       when "cat" then ["meow", null]
       when "dog" then ["bark", "wag"]
       when "rabbit" then [null, "hop hop"]
+      when "bird" then ["chirp", "flap"]
       when "horse", "donkey"
         ["neigh", null]
       else
