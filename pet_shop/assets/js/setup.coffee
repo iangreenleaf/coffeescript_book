@@ -1,3 +1,8 @@
+#= require person
+#= require animal
+#= require pet_view
+#= require pet_list_view
+#= require shop_view
 shop = {
   owner: new Person "Ian"
   animals: Animal.loadSeedData()

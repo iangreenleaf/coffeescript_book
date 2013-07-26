@@ -1,3 +1,4 @@
+#= require view
 class window.PetView extends View
   constructor: (@pet) ->
 

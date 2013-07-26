@@ -1,3 +1,5 @@
+#= require view
+#= require animal
 class window.PetListView extends View
   constructor: (@views, featuredPets) ->
     @featured = featuredPets

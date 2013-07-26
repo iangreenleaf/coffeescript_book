@@ -1,3 +1,4 @@
+#= require reqwest
 class window.Animal
   @CATEGORIES = ["All", "Dog", "Cat", "Rabbit", "Horse"]
 
