@@ -5,11 +5,11 @@
 #= require shop_view
 shop = {
   owner: new Person "Ian"
-  animals: Animal.loadSeedData()
   featured: [ "Chupa", "Kelsey", "Flops" ]
 }
 
-petViews = (new PetView pet for pet in shop.animals)
-petListView = new PetListView petViews, shop.featured
-mainView = new ShopView shop.owner, petListView
-mainView.render()
+Animal.loadSeedData (animals) ->
+  petViews = (new PetView pet for pet in animals)
+  petListView = new PetListView petViews, shop.featured
+  mainView = new ShopView shop.owner, petListView
+  mainView.render()
