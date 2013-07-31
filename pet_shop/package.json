@@ -9,6 +9,7 @@
     "express": "3.2.4",
     "connect-assets": "2.4.x",
     "coffee-script": "1.x",
+    "nstore": "https://github.com/iangreenleaf/nstore/archive/coffeescript_book.tar.gz",
     "ejs": "*"
   }
 }

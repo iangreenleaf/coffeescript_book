@@ -1,0 +1,18 @@
+nStore = require 'nstore'
+nStore = nStore.extend require('nstore/query')()
+petSeedData = require './data/pets'
+
+task "db:seed", "Seed the database", ->
+  nStore.new 'data/pets.db', (err, petsDB) ->
+    return console.log err if err?
+    console.log "Adding #{petSeedData.length} records."
+    for pet in petSeedData
+      petsDB.save null, pet, (err) ->
+        console.log err if err?
+
+task "db:reset", "Reset the database to a clean development state", ->
+  nStore.new 'data/pets.db', (err, petsDB) ->
+    return console.log err if err?
+    petsDB.clear (err) ->
+      return console.log err if err?
+      invoke "db:seed"

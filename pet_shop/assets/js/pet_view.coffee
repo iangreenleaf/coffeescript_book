@@ -9,7 +9,15 @@ class window.PetView extends View
       @imageTag(@pet.image) +
       "<p class='description'>#{@pet.description}</p>" +
       "<div id='additional_info' class='more'></div>" +
-      "<div id='extra_links' class='more'></div>"
+      "<div id='extra_links' class='more'></div>" +
+      @purchaseForm()
+
+  purchaseForm: ->
+    "<div id='purchase'>" +
+      "<form method='POST' action='/pets/#{@pet.id}/buy'>" +
+      "<input type='submit' value='Buy' />" +
+      "</form>" +
+      "</div>"
 
   formattedName: (options={}) ->
     result = @pet.name
