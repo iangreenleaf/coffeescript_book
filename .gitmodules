@@ -1,0 +1,120 @@
+[submodule "ch03/01_basic_app"]
+	path = ch03/01_basic_app
+	url = git://github.com/iangreenleaf/coffeescript_book.git
+	branch = history
+[submodule "ch03/02_expanded_pet_list"]
+	path = ch03/02_expanded_pet_list
+	url = git://github.com/iangreenleaf/coffeescript_book.git
+	branch = history
+[submodule "ch04/01_null_values"]
+	path = ch04/01_null_values
+	url = git://github.com/iangreenleaf/coffeescript_book.git
+	branch = history
+[submodule "ch04/02_destructuring_assignment"]
+	path = ch04/02_destructuring_assignment
+	url = git://github.com/iangreenleaf/coffeescript_book.git
+	branch = history
+[submodule "ch04/03_default_arguments"]
+	path = ch04/03_default_arguments
+	url = git://github.com/iangreenleaf/coffeescript_book.git
+	branch = history
+[submodule "ch04/04_splats"]
+	path = ch04/04_splats
+	url = git://github.com/iangreenleaf/coffeescript_book.git
+	branch = history
+[submodule "ch06/01_data_classes"]
+	path = ch06/01_data_classes
+	url = git://github.com/iangreenleaf/coffeescript_book.git
+	branch = history
+[submodule "ch06/02_view_refactoring"]
+	path = ch06/02_view_refactoring
+	url = git://github.com/iangreenleaf/coffeescript_book.git
+	branch = history
+[submodule "ch06/03_final_pass_and_inheritance"]
+	path = ch06/03_final_pass_and_inheritance
+	url = git://github.com/iangreenleaf/coffeescript_book.git
+	branch = history
+[submodule "ch08/01_ajax_requests"]
+	path = ch08/01_ajax_requests
+	url = git://github.com/iangreenleaf/coffeescript_book.git
+	branch = history
+[submodule "ch08/02_using_a_library"]
+	path = ch08/02_using_a_library
+	url = git://github.com/iangreenleaf/coffeescript_book.git
+	branch = history
+[submodule "ch08/03_multiple_callbacks"]
+	path = ch08/03_multiple_callbacks
+	url = git://github.com/iangreenleaf/coffeescript_book.git
+	branch = history
+[submodule "ch09/01_buggy_code"]
+	path = ch09/01_buggy_code
+	url = git://github.com/iangreenleaf/coffeescript_book.git
+	branch = history
+[submodule "ch09/02_patched"]
+	path = ch09/02_patched
+	url = git://github.com/iangreenleaf/coffeescript_book.git
+	branch = history
+[submodule "ch10/01_source_maps"]
+	path = ch10/01_source_maps
+	url = git://github.com/iangreenleaf/coffeescript_book.git
+	branch = history
+[submodule "ch10/01_coffeescript_in_the_browser"]
+	path = ch10/01_coffeescript_in_the_browser
+	url = git://github.com/iangreenleaf/coffeescript_book.git
+	branch = history
+[submodule "ch10/02_coffeescript_in_rails"]
+	path = ch10/02_coffeescript_in_rails
+	url = git://github.com/iangreenleaf/coffeescript_book.git
+	branch = history
+[submodule "ch10/03_coffeescript_with_brunch"]
+	path = ch10/03_coffeescript_with_brunch
+	url = git://github.com/iangreenleaf/coffeescript_book.git
+	branch = history
+[submodule "ch10/04_coffeescript_in_node"]
+	path = ch10/04_coffeescript_in_node
+	url = git://github.com/iangreenleaf/coffeescript_book.git
+	branch = history
+[submodule "ch10/02_coffeescript_in_rails/rails_3_2"]
+	path = ch10/02_coffeescript_in_rails/rails_3_2
+	url = git://github.com/iangreenleaf/coffeescript_book.git
+	branch = history
+[submodule "ch10/02_coffeescript_in_rails/rails_4_0"]
+	path = ch10/02_coffeescript_in_rails/rails_4_0
+	url = git://github.com/iangreenleaf/coffeescript_book.git
+	branch = history
+[submodule "ch11/01_separate_data_endpoint"]
+	path = ch11/01_separate_data_endpoint
+	url = git://github.com/iangreenleaf/coffeescript_book.git
+	branch = history
+[submodule "ch11/02_using_a_database"]
+	path = ch11/02_using_a_database
+	url = git://github.com/iangreenleaf/coffeescript_book.git
+	branch = history
+[submodule "ch01/01_starter_application"]
+	path = ch01/01_starter_application
+	url = git://github.com/iangreenleaf/coffeescript_book.git
+	branch = history
+[submodule "ch02/01_code_snippets"]
+	path = ch02/01_code_snippets
+	url = git://github.com/iangreenleaf/coffeescript_book.git
+	branch = history
+[submodule "ch05/01_classes"]
+	path = ch05/01_classes
+	url = git://github.com/iangreenleaf/coffeescript_book.git
+	branch = history
+[submodule "ch07/01_advanced_coffeescript"]
+	path = ch07/01_advanced_coffeescript
+	url = git://github.com/iangreenleaf/coffeescript_book.git
+	branch = history
+[submodule "ch08/04_promises"]
+	path = ch08/04_promises
+	url = git://github.com/iangreenleaf/coffeescript_book.git
+	branch = history
+[submodule "ch08/05_async_lib"]
+	path = ch08/05_async_lib
+	url = git://github.com/iangreenleaf/coffeescript_book.git
+	branch = history
+[submodule "ch08/06_iced_coffee_script"]
+	path = ch08/06_iced_coffee_script
+	url = git://github.com/iangreenleaf/coffeescript_book.git
+	branch = history
