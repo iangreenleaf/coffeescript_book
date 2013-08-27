@@ -1,3 +1,4 @@
+#= require view
 class window.PetView extends View
   constructor: (@pet) ->
 
@@ -20,12 +21,10 @@ class window.PetView extends View
       [sound, action] = @pet.behaviors()
       [behavior, cssClass] = if sound?
         ["#{sound}!", "sound"]
-      else if action?
-        [action, "action"]
       else
-        ["", ""]
+        [action, "action"]
 
-      result += " <span class='#{cssClass}'>#{behavior.toLowerCase()}</span>"
+      result += " <span class='#{cssClass}'>#{behavior}</span>"
     result
 
   formattedLink: (i, options={}) ->
@@ -36,10 +35,9 @@ class window.PetView extends View
     @pet.fetchBreedInfo =>
       if @pet.breedInfo?
         @renderToElement "additional_info",
-          "<p>#{@pet.breedInfo.description} (" +
-          "<a href='#{@pet.breedInfo.url}'>#{@pet.breedInfo.source}</a>" +
-          ", powered by <a href='https://duckduckgo.com'>DuckDuckGo</a>" +
-          ")</p>"
+          "<p>#{@pet.breedInfo.description} " +
+          "(<a href='#{@pet.breedInfo.url}'>#{@pet.breedInfo.source}</a>)" +
+          "</p>"
       if @pet.extraLinks?
         output = "Learn more: <ul>"
         for topic, url of @pet.extraLinks

@@ -7,6 +7,6 @@ class window.View
     options.size ?= "original"
     if filename?
       sizedFilename = filename.replace /\.(jpg|png)$/, "-#{options.size}.$1"
-      "<img src='images/#{sizedFilename}' />"
+      "<img src='assets/#{sizedFilename}' />"
     else
       ""
