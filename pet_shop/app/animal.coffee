@@ -1,16 +1,13 @@
-class window.Animal
+module.exports = class Animal
   @CATEGORIES = ["All", "Dog", "Cat", "Rabbit", "Horse"]
 
   behaviors: ->
     switch @type
       when "cat" then ["meow", null]
       when "dog" then ["bark", "wag"]
-      when "rabbit" then [null, "hop hop"]
-      when "bird" then ["chirp", "flap"]
       when "horse", "donkey"
         ["neigh", null]
-      else
-        [null, null]
+      else [null, "hop hop"]
 
   matchesFilter: (criteria='All') ->
     criteria is "All" or criteria.toLowerCase() is @type
@@ -18,7 +15,7 @@ class window.Animal
   fetchBreedInfo: (callback) ->
     reqwest
       url: "https://api.duckduckgo.com/"
-      data: { q: @breed, format: "json", t: "CoffeeScriptBook" }
+      data: { q: @breed, format: 'json' }
       type: "jsonp"
       success: (response) =>
         if response.Abstract
@@ -27,7 +24,7 @@ class window.Animal
             source: response.AbstractSource
             url: response.AbstractURL
         callback()
-        topics = (topic.FirstURL for topic in response.RelatedTopics when topic.FirstURL?)
+        topics = (topic.Text for topic in response.RelatedTopics)
         @fetchExtraLinks topics, callback
 
   fetchExtraLinks: (topics, callback) ->
@@ -36,12 +33,12 @@ class window.Animal
     for topic in topics
       do (topic) =>
         reqwest
-          url: topic
-          data: { format: "json" }
+          url: "https://api.duckduckgo.com/"
+          data: { q: topic, format: 'json' }
           type: "jsonp"
           success: (response) =>
-            if response.Heading
-              @extraLinks[response.Heading] = topic
+            if response.AbstractURL
+              @extraLinks[topic] = response.AbstractURL
               expected -= 1
               callback() if expected is 0
 
@@ -102,12 +99,6 @@ class window.Animal
       type: "horse"
       breed: "Breton"
       description: "The resident shop patriarch. Very calm and tolerates the antics of the other animals when they sneak into his pen."
-    ,
-      name: "Captain Chirp"
-      type: "bird"
-      age: 2
-      breed: "Parakeet"
-      description: "Nice enough, though he strikes people as a bit... flighty."
     ]
     for animal in animalData
       @fromHash animal

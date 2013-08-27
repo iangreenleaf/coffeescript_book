@@ -1,4 +1,4 @@
-class window.Person
+module.exports = class Person
   constructor: (@name) ->
 
   possessiveName: ->

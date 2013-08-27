@@ -1,3 +1,8 @@
+Person = require "person"
+Animal = require "animal"
+PetView = require "pet_view"
+PetListView = require "pet_list_view"
+ShopView = require "shop_view"
 shop = {
   owner: new Person "Ian"
   animals: Animal.loadSeedData()

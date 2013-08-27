@@ -1,5 +1,8 @@
-class window.PetListView extends View
-  constructor: (@views, featuredPets) ->
+View = require "view"
+Animal = require "animal"
+module.exports = class PetListView extends View
+  constructor: (petViews, featuredPets) ->
+    @views = petViews
     @featured = featuredPets
 
   render: ->

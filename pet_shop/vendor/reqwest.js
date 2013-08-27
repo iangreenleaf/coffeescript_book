@@ -1,14 +1,14 @@
 /*!
   * Reqwest! A general purpose XHR connection manager
-  * (c) Dustin Diaz 2013
+  * (c) Dustin Diaz 2012
   * https://github.com/ded/reqwest
   * license MIT
   */
-!function (name, context, definition) {
+;(function (name, context, definition) {
   if (typeof module != 'undefined' && module.exports) module.exports = definition()
   else if (typeof define == 'function' && define.amd) define(definition)
   else context[name] = definition()
-}('reqwest', this, function () {
+})('reqwest', this, function () {
 
   var win = window
     , doc = document
@@ -50,13 +50,8 @@
         : function () {
             return new ActiveXObject('Microsoft.XMLHTTP')
           }
-    , globalSetupOptions = {
-        dataFilter: function (data) {
-          return data
-        }
-      }
 
-  function handleReadyState(r, success, error) {
+  function handleReadyState (r, success, error) {
     return function () {
       // use _aborted to mitigate against IE err c00c023f
       // (can't read props on aborted request objects)
@@ -71,7 +66,7 @@
     }
   }
 
-  function setHeaders(http, o) {
+  function setHeaders (http, o) {
     var headers = o.headers || {}
       , h
 
@@ -86,13 +81,13 @@
       headers.hasOwnProperty(h) && http.setRequestHeader(h, headers[h])
   }
 
-  function setCredentials(http, o) {
+  function setCredentials (http, o) {
     if (typeof o.withCredentials !== 'undefined' && typeof http.withCredentials !== 'undefined') {
       http.withCredentials = !!o.withCredentials
     }
   }
 
-  function generalCallback(data) {
+  function generalCallback (data) {
     lastValue = data
   }
 
@@ -100,7 +95,7 @@
     return url + (/\?/.test(url) ? '&' : '?') + s
   }
 
-  function handleJsonp(o, fn, err, url) {
+  function handleJsonp (o, fn, err, url) {
     var reqId = uniqid++
       , cbkey = o.jsonpCallback || 'callback' // the 'callback' key
       , cbval = o.jsonpCallbackName || reqwest.getcallbackPrefix(reqId)
@@ -143,7 +138,7 @@
       script.onload = script.onreadystatechange = null
       script.onclick && script.onclick()
       // Call the user callback with the last value stored and clean up values and scripts.
-      fn(lastValue)
+      o.success && o.success(lastValue)
       lastValue = undefined
       head.removeChild(script)
       loaded = 1
@@ -156,7 +151,7 @@
     return {
       abort: function () {
         script.onload = script.onreadystatechange = null
-        err({}, 'Request is aborted: timeout', {})
+        o.error && o.error({}, 'Request is aborted: timeout', {})
         lastValue = undefined
         head.removeChild(script)
         loaded = 1
@@ -164,7 +159,7 @@
     }
   }
 
-  function getRequest(fn, err) {
+  function getRequest (fn, err) {
     var o = this.o
       , method = (o.method || 'GET').toUpperCase()
       , url = typeof o === 'string' ? o : o.url
@@ -184,7 +179,7 @@
     if (o.type == 'jsonp') return handleJsonp(o, fn, err, url)
 
     http = xhr()
-    http.open(method, url, o.async === false ? false : true)
+    http.open(method, url, true)
     setHeaders(http, o)
     setCredentials(http, o)
     http.onreadystatechange = handleReadyState(this, fn, err)
@@ -193,19 +188,19 @@
     return http
   }
 
-  function Reqwest(o, fn) {
+  function Reqwest (o, fn) {
     this.o = o
     this.fn = fn
 
     init.apply(this, arguments)
   }
 
-  function setType(url) {
+  function setType (url) {
     var m = url.match(/\.(json|jsonp|html|xml)(\?|$)/)
     return m ? m[1] : 'js'
   }
 
-  function init(o, fn) {
+  function init (o, fn) {
 
     this.url = typeof o == 'string' ? o : o.url
     this.timeout = null
@@ -260,14 +255,7 @@
     }
 
     function success (resp) {
-      // use global data filter on response text
-      var filteredResponse = globalSetupOptions.dataFilter(resp.responseText, type)
-        , r = filteredResponse
-      try {
-        resp.responseText = r
-      } catch (e) {
-        // can't assign this in IE<=8, just ignore
-      }
+      var r = resp.responseText
       if (r) {
         switch (type) {
         case 'json':
@@ -304,7 +292,7 @@
       complete(resp)
     }
 
-    function error(resp, msg, t) {
+    function error (resp, msg, t) {
       self._responseArgs.resp = resp
       self._responseArgs.msg = msg
       self._responseArgs.t = t
@@ -337,8 +325,6 @@
      * `then` will execute upon successful requests
      */
   , then: function (success, fail) {
-      success = success || function () {}
-      fail = fail || function () {}
       if (this._fulfilled) {
         success(this._responseArgs.resp)
       } else if (this._erred) {
@@ -375,16 +361,16 @@
     }
   }
 
-  function reqwest(o, fn) {
+  function reqwest (o, fn) {
     return new Reqwest(o, fn)
   }
 
   // normalize newline variants according to spec -> CRLF
-  function normalize(s) {
+  function normalize (s) {
     return s ? s.replace(/\r?\n/g, '\r\n') : ''
   }
 
-  function serial(el, cb) {
+  function serial (el, cb) {
     var n = el.name
       , t = el.tagName.toLowerCase()
       , optCb = function (o) {
@@ -426,7 +412,7 @@
   // collect up all form elements found from the passed argument elements all
   // the way down to child elements; pass a '<form>' or form fields.
   // called with 'this'=callback to use for serial() on each element
-  function eachFormElement() {
+  function eachFormElement () {
     var cb = this
       , e, i
       , serializeSubtags = function (e, tags) {
@@ -445,12 +431,12 @@
   }
 
   // standard query string style serialization
-  function serializeQueryString() {
+  function serializeQueryString () {
     return reqwest.toQueryString(reqwest.serializeArray.apply(null, arguments))
   }
 
   // { 'name': 'value', ... } style serialization
-  function serializeHash() {
+  function serializeHash () {
     var hash = {}
     eachFormElement.apply(function (name, value) {
       if (name in hash) {
@@ -486,56 +472,28 @@
     return fn.apply(null, args)
   }
 
-  reqwest.toQueryString = function (o, trad) {
-    var prefix, i
-      , traditional = trad || false
-      , s = []
+  reqwest.toQueryString = function (o) {
+    var qs = '', i
       , enc = encodeURIComponent
-      , add = function (key, value) {
-          // If value is a function, invoke it and return its value
-          value = ('function' === typeof value) ? value() : (value == null ? '' : value)
-          s[s.length] = enc(key) + '=' + enc(value)
+      , push = function (k, v) {
+          qs += enc(k) + '=' + enc(v) + '&'
         }
-    // If an array was passed in, assume that it is an array of form elements.
+      , k, v
+
     if (isArray(o)) {
-      for (i = 0; o && i < o.length; i++) add(o[i].name, o[i].value)
+      for (i = 0; o && i < o.length; i++) push(o[i].name, o[i].value)
     } else {
-      // If traditional, encode the "old" way (the way 1.3.2 or older
-      // did it), otherwise encode params recursively.
-      for (prefix in o) {
-        buildParams(prefix, o[prefix], traditional, add)
+      for (k in o) {
+        if (!Object.hasOwnProperty.call(o, k)) continue
+        v = o[k]
+        if (isArray(v)) {
+          for (i = 0; i < v.length; i++) push(k, v[i])
+        } else push(k, o[k])
       }
     }
 
     // spaces should be + according to spec
-    return s.join('&').replace(/%20/g, '+')
-  }
-
-  function buildParams(prefix, obj, traditional, add) {
-    var name, i, v
-      , rbracket = /\[\]$/
-
-    if (isArray(obj)) {
-      // Serialize array item.
-      for (i = 0; obj && i < obj.length; i++) {
-        v = obj[i]
-        if (traditional || rbracket.test(prefix)) {
-          // Treat each array item as a scalar.
-          add(prefix, v)
-        } else {
-          buildParams(prefix + '[' + (typeof v === 'object' ? i : '') + ']', v, traditional, add)
-        }
-      }
-    } else if (obj && obj.toString() === '[object Object]') {
-      // Serialize object item.
-      for (name in obj) {
-        buildParams(prefix + '[' + name + ']', obj[name], traditional, add)
-      }
-
-    } else {
-      // Serialize scalar item.
-      add(prefix, obj)
-    }
+    return qs.replace(/&$/, '').replace(/%20/g, '+')
   }
 
   reqwest.getcallbackPrefix = function () {
@@ -554,12 +512,5 @@
     return new Reqwest(o, fn)
   }
 
-  reqwest.ajaxSetup = function (options) {
-    options = options || {}
-    for (var k in options) {
-      globalSetupOptions[k] = options[k]
-    }
-  }
-
   return reqwest
-});
+})

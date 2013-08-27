@@ -1,4 +1,4 @@
-class window.View
+module.exports = class View
   renderToElement: (id, output) ->
     el = document.getElementById(id)
     el.innerHTML = output

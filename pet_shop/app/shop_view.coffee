@@ -1,4 +1,5 @@
-class window.ShopView extends View
+View = require "view"
+module.exports = class ShopView extends View
   constructor: (@owner, @mainContent) ->
 
   render: ->

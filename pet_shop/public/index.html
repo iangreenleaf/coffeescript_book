@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8">
     <title>The Pet Shop</title>
-    <link href="style.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/app.css" media="screen" rel="stylesheet" type="text/css" />
   </head>
   <body>
     <h1>Welcome to <span id="owner_name"></span> Pet Shop</h1>
@@ -21,13 +20,8 @@
     <div id="pet_information">
     </div>
 
-    <script src="reqwest.js"></script>
-    <script src="person.js"></script>
-    <script src="animal.js"></script>
-    <script src="view.js"></script>
-    <script src="pet_view.js"></script>
-    <script src="pet_list_view.js"></script>
-    <script src="shop_view.js"></script>
-    <script src="setup.js"></script>
+    <script src="/javascripts/vendor.js"></script>
+    <script src="/javascripts/app.js"></script>
+    <script>require("setup")</script>
   </body>
 </html>
