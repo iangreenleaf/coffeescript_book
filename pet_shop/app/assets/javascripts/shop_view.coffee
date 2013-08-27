@@ -1,3 +1,4 @@
+#= require view
 class window.ShopView extends View
   constructor: (@owner, @mainContent) ->
 
